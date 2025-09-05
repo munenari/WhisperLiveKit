@@ -147,10 +147,7 @@ function fmt1(x) {
 }
 
 // Default WebSocket URL computation
-const host = window.location.hostname || "localhost";
-const port = window.location.port;
-const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-const defaultWebSocketUrl = `${protocol}://${host}${port ? ":" + port : ""}/asr`;
+const defaultWebSocketUrl = `./asr`;
 
 // Populate default caption and input
 if (websocketDefaultSpan) websocketDefaultSpan.textContent = defaultWebSocketUrl;
@@ -167,10 +164,6 @@ if (chunkSelector) {
 // WebSocket input change handling
 websocketInput.addEventListener("change", () => {
   const urlValue = websocketInput.value.trim();
-  if (!urlValue.startsWith("ws://") && !urlValue.startsWith("wss://")) {
-    statusText.textContent = "Invalid WebSocket URL (must start with ws:// or wss://)";
-    return;
-  }
   websocketUrl = urlValue;
   statusText.textContent = "WebSocket URL updated. Ready to connect.";
 });
@@ -435,7 +428,7 @@ async function startRecording() {
       console.log("Error acquiring wake lock.");
     }
 
-    const audioConstraints = selectedMicrophoneId 
+    const audioConstraints = selectedMicrophoneId
       ? { audio: { deviceId: { exact: selectedMicrophoneId } } }
       : { audio: true };
 
